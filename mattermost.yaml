@@ -1,0 +1,188 @@
+apiVersion: v1
+kind: Template
+message: |-
+  The following service(s) have been created in your project: ${APPLICATION_NAME}.
+
+  Mattermost Version: ${MATTERMOST_VERSION}
+       Database User: from secret `mattermost`
+            Password: from secret `mattermost`
+       Database Name: ${POSTGRESQL_DATABASE}
+metadata:
+  name: mattermost
+  annotations:
+    description: |-
+      Community template for running Mattermost Team Edition on Openshift (Origin)
+      
+      https://about.mattermost.com  
+ 
+    openshift.io/display-name: Mattermost
+    tags: mattermost
+    template.openshift.io/documentation-url: https://github.com/tschwaerzl/mattermost-openshift/blob/master/README.md
+    template.openshift.io/long-description: This template provides a Mattermost service, it depends on a Secret and PostgreSQL.
+    template.openshift.io/provider-display-name: Mattermost Community
+    template.openshift.io/support-url: https://github.com/tschwaerzl/mattermost-openshift/issues
+
+objects:
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: "mattermost-data"
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: "${VOLUME_CAPACITY}"
+- kind: ImageStream
+  apiVersion: v1
+  metadata:
+    name: '${APPLICATION_NAME}'
+  spec:
+    tags:  
+    - name: '${MATTERMOST_VERSION}'
+      annotations:
+        description: The Mattermost image from docker.io/tschwaerzl/mattermost-openshift
+        openshift.io/display-name: 'Mattermost ${MATTERMOST_VERSION}'
+        tags: mattermost
+        version: '${MATTERMOST_VERSION}'
+      from:
+        kind: DockerImage
+        name: 'docker.io/tschwaerzl/mattermost-openshift:${MATTERMOST_VERSION}'
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: '${APPLICATION_NAME}'
+  spec:
+    selector:
+      name: '${APPLICATION_NAME}'
+    replicas: 2
+    securityContext: {}
+    serviceAccount: mattermost
+    serviceAccountName: mattermost
+    template:
+      metadata:
+        labels:
+          name: '${APPLICATION_NAME}'
+      spec:
+        containers:
+        - image: '${APPLICATION_NAME}'
+          imagePullPolicy: Always
+          name: '${APPLICATION_NAME}'
+          volumeMounts:
+            - mountPath: /opt/mattermost/data
+              name: mattermost-data
+          env:
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: user
+                name: mattermost-database
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: mattermost-database
+          - name: DB_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                key: db_database
+                name: mattermost
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                key: db_host
+                name: mattermost
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                key: db_port
+                name: mattermost
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8065
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          ports:
+          - containerPort: 8065
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8065
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 128Mi
+        volumes:
+        - name: mattermost-data
+          persistentVolumeClaim:
+            claimName: mattermost-data
+    triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - '${APPLICATION_NAME}'
+        from:
+          kind: ImageStreamTag
+          name: '${APPLICATION_NAME}:${MATTERMOST_VERSION}'
+    - type: ConfigChange
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: '${APPLICATION_NAME}'
+  spec:
+    ports:
+    - name: 8065-tcp
+      port: 8065
+      protocol: TCP
+      targetPort: 8065
+    selector:
+      deploymentconfig: '${APPLICATION_NAME}'
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: '${APPLICATION_NAME}'
+  spec:
+    host: 
+    to:
+      kind: Service
+      name: '${APPLICATION_NAME}'
+    port:
+      targetPort: 8065-tcp
+- kind: ConfigMap
+  apiVersion: v1
+  metadata:
+    name: mattermost
+  data:
+    db_database: '${POSTGRESQL_DATABASE}'
+    db_host: postgresql.mattermost.svc
+    db_port: '5432'
+parameters:
+- name: APPLICATION_NAME
+  required: true
+  value: mattermost
+- name: MATTERMOST_VERSION
+  required: true
+  value: '4.10.1'
+- name: VOLUME_CAPACITY
+  required: true
+  value: 10G
+- description: Name of the PostgreSQL database accessed.
+  displayName: PostgreSQL Database Name
+  name: POSTGRESQL_DATABASE
+  required: true
+  value: mattermost
