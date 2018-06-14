@@ -13,7 +13,9 @@ metadata:
     description: |-
       Community template for running Mattermost Team Edition on Openshift (Origin)
       
-      https://about.mattermost.com  
+      https://about.mattermost.com
+
+      You need a running PostgreSQL server running and a secret with username/password configured.
  
     openshift.io/display-name: Mattermost
     tags: mattermost
