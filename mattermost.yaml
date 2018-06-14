@@ -17,6 +17,7 @@ metadata:
  
     openshift.io/display-name: Mattermost
     tags: mattermost
+    iconClass: fa fa-comments
     template.openshift.io/documentation-url: https://github.com/tschwaerzl/mattermost-openshift/blob/master/README.md
     template.openshift.io/long-description: This template provides a Mattermost service, it depends on a Secret and PostgreSQL.
     template.openshift.io/provider-display-name: Mattermost Community
