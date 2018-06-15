@@ -1,7 +1,7 @@
 FROM alpine:3.7
 
 MAINTAINER Thomas Schwärzl <thomas.schwaerzl@nttdata.com>
-# baased on the work of Christoph Görn <goern@b4mad.net>
+# based on the work of Christoph Görn <goern@b4mad.net>
 # based on the work of Takayoshi Kimura <tkimura@redhat.com>
 
 ENV container docker
