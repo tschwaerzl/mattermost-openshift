@@ -5,8 +5,8 @@ MAINTAINER Thomas Schwärzl <thomas.schwaerzl@nttdata.com>
 # based on the work of Takayoshi Kimura <tkimura@redhat.com>
 
 ENV container docker
-ENV MATTERMOST_VERSION 4.10.1
-ENV MATTERMOST_VERSION_SHORT 4101
+ENV MATTERMOST_VERSION 5.2.1
+ENV MATTERMOST_VERSION_SHORT 521
 
 # Labels consumed by Red Hat build service
 LABEL Component="mattermost" \
