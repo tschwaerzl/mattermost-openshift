@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 
 MAINTAINER Thomas Schwärzl <thomas.schwaerzl@nttdata.com>
 # based on the work of Christoph Görn <goern@b4mad.net>
@@ -7,6 +7,8 @@ MAINTAINER Thomas Schwärzl <thomas.schwaerzl@nttdata.com>
 ENV container docker
 ENV MATTERMOST_VERSION 5.2.1
 ENV MATTERMOST_VERSION_SHORT 521
+ARG PUID=2000
+ARG PGID=2000
 
 # Labels consumed by Red Hat build service
 LABEL Component="mattermost" \
@@ -47,6 +49,11 @@ COPY mattermost-launch.sh /opt/mattermost/bin/mattermost-launch.sh
 RUN chmod 777 /opt/mattermost/config/config.json && \
     mkdir -p /opt/mattermost/data /opt/mattermost/plugins /opt/mattermost/client/plugins && \
     chmod 777 /opt/mattermost/logs/ /opt/mattermost/data /opt/mattermost/plugins /opt/mattermost/client/plugins
+
+RUN addgroup -g ${PGID} mattermost \
+    && adduser -D -u ${PUID} -G mattermost -h /opt/mattermost -D mattermost
+
+USER 2000
 
 EXPOSE 8065
 
