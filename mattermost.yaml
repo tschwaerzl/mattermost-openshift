@@ -180,7 +180,7 @@ parameters:
   value: mattermost
 - name: MATTERMOST_VERSION
   required: true
-  value: '4.10.1'
+  value: '5.2.1'
 - name: VOLUME_CAPACITY
   required: true
   value: 10G
