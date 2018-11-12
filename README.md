@@ -1,8 +1,16 @@
-# Mattermost for OpenShift
+# Mattermost for OpenShift &nbsp; [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Deploy%20Mattermost%20easily%20on%20OpenShift%20in%20no%20time%204&url=https://github.com/tschwaerzl/mattermost-openshift&via=tschwaerzl&hashtags=openshift,mattermost)
+
+![Docker Build Status](https://img.shields.io/docker/build/tschwaerzl/mattermost-openshift.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/tschwaerzl/mattermost-openshift.svg)
 
 OpenShift application template for Mattermost Team Edition.
 
-## Getting started
+## Table of contents
+
+- [Quick start](#quick-start)
+- [Contributors](#contributors)
+
+## Quick start
 
 ### Prerequisites
 
@@ -32,3 +40,11 @@ oc create -f mattermost.yaml
 6. Wait for the Pods to launch and access your new Mattermost by the created service.
 
 Have fun.
+
+## Contributors
+
+Special thanks to everyone who contributed to getting the Mattermost OpenShift Template to the current state.  🙏
+
+## Help
+
+You tried to deploy and need help real quick? Message [@tschwaerzl](https://twitter.com/tschwaerzl) via Twitter or open an issue.
