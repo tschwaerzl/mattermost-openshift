@@ -5,8 +5,8 @@ MAINTAINER Thomas Schwärzl <thomas.schwaerzl@nttdata.com>
 # based on the work of Takayoshi Kimura <tkimura@redhat.com>
 
 ENV container docker
-ENV MATTERMOST_VERSION 5.4.0
-ENV MATTERMOST_VERSION_SHORT 540
+ENV MATTERMOST_VERSION 5.5.0
+ENV MATTERMOST_VERSION_SHORT 550
 ARG PUID=2000
 ARG PGID=2000
 
