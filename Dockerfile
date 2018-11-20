@@ -1,6 +1,6 @@
 FROM alpine:3.8
 
-MAINTAINER Thomas Schwärzl <thomas.schwaerzl@nttdata.com>
+LABEL maintainer="Thomas Schwärzl <thomas.schwaerzl@nttdata.com>"
 # based on the work of Christoph Görn <goern@b4mad.net>
 # based on the work of Takayoshi Kimura <tkimura@redhat.com>
 
