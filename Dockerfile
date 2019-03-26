@@ -5,8 +5,8 @@ LABEL maintainer="Thomas Schwärzl <thomas.schwaerzl@nttdata.com>"
 # based on the work of Takayoshi Kimura <tkimura@redhat.com>
 
 ENV container docker
-ENV MATTERMOST_VERSION 5.7.0
-ENV MATTERMOST_VERSION_SHORT 570
+ENV MATTERMOST_VERSION 5.9.0
+ENV MATTERMOST_VERSION_SHORT 590
 ARG PUID=2000
 ARG PGID=2000
 
