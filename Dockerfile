@@ -1,12 +1,12 @@
-FROM alpine:3.10.2
+FROM alpine:3.12.1
 
 LABEL maintainer="Thomas Schwärzl <thomas.schwaerzl@nttdata.com>"
 # based on the work of Christoph Görn <goern@b4mad.net>
 # based on the work of Takayoshi Kimura <tkimura@redhat.com>
 
 ENV container docker
-ENV MATTERMOST_VERSION 5.15.1
-ENV MATTERMOST_VERSION_SHORT 5151
+ENV MATTERMOST_VERSION 5.29.0
+ENV MATTERMOST_VERSION_SHORT 5290
 ARG PUID=2000
 ARG PGID=2000
 
